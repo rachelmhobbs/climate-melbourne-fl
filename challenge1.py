@@ -56,6 +56,21 @@ def temp_less_32(df):
     print('The total number of hours when temperature was less than 32 was', count3)
     return count3
 
+def convert(df):
+
+    '''
+    Pre-processing to use DateTime from Pandas. Converts to datetime type and
+    changes index from 0, 1, etc. to 'time'.
+
+    Parameter:
+        df: the dataframe
+    '''
+    df['time'] = pd.to_datetime(df['time']) #convert to datetime type
+    print(df['time']) #check that it's now a datetime type
+    df.set_index('time', inplace=True) #index using time instead of 0, 1, etc.
+    print(df) #check if index now is using time
+    return df
+
 def temp_ave_month(df):
 
     '''
@@ -65,10 +80,6 @@ def temp_ave_month(df):
     Parameter:
         df: the dataframe
     '''
-    df['time'] = pd.to_datetime(df['time']) #convert to datetime type
-    print(df['time']) #check that it's now a datetime type
-    df.set_index('time', inplace=True) #index using time instead of 0, 1, etc.
-    print(df) #check if index now is using time
     jan_mean = df.loc['2019-01']['temp'].mean()
     feb_mean = df.loc['2019-02']['temp'].mean()
     march_mean = df.loc['2019-03']['temp'].mean()
@@ -89,7 +100,34 @@ def temp_ave_month(df):
     print(answer)
     return answer
 
+def rainfall_month_sum(df):
 
+    '''
+    The sum each month of the dataframe column called 'precip_1hr'. Returns a Pandas
+    dataframe with the month name and the total rainfall for that month.
+
+    Parameter:
+        df: the dataframe
+    '''
+    jan_sum = df.loc['2019-01']['precip_1hr'].sum()
+    feb_sum = df.loc['2019-02']['precip_1hr'].sum()
+    march_sum = df.loc['2019-03']['precip_1hr'].sum()
+    april_sum = df.loc['2019-04']['precip_1hr'].sum()
+    may_sum = df.loc['2019-05']['precip_1hr'].sum()
+    june_sum = df.loc['2019-06']['precip_1hr'].sum()
+    july_sum = df.loc['2019-07']['precip_1hr'].sum()
+    aug_sum = df.loc['2019-08']['precip_1hr'].sum()
+    sept_sum = df.loc['2019-09']['precip_1hr'].sum()
+    oct_sum = df.loc['2019-10']['precip_1hr'].sum()
+    nov_sum = df.loc['2019-11']['precip_1hr'].sum()
+    dec_sum = df.loc['2019-12']['precip_1hr'].sum()
+    rain_data = [['January', jan_sum], ['February', feb_sum], ['March', march_sum],
+    ['April', april_sum], ['May', may_sum], ['June', june_sum], ['July', july_sum],
+    ['August', aug_sum], ['September', sept_sum], ['October', oct_sum],
+    ['November', nov_sum], ['December', dec_sum]]
+    rainfall_answer = pd.DataFrame(rain_data, columns = ['Month', 'Total Rainfall'])
+    print(rainfall_answer)
+    return rainfall_answer
 
 def temp_ave_total(df):
 
@@ -155,11 +193,23 @@ print(mlb_temp_ls_32)
 sd_temp_ls_32 = temp_less_32(sd_hrly)
 print(sd_temp_ls_32)
 
+#convert to datetime type and change index from 0, 1, etc. to 'time'
+mlb_hrly = convert(mlb_hrly)
+sd_hrly = convert(sd_hrly)
+
 mlb_monthly_temp_mean = temp_ave_month(mlb_hrly)
 print(mlb_monthly_temp_mean)
 
 sd_monthly_temp_mean = temp_ave_month(sd_hrly)
 print(sd_monthly_temp_mean)
+
+#print(mlb_hrly) #check if index now is using time - it is
+
+mlb_rainfall = rainfall_month_sum(mlb_hrly)
+print(mlb_rainfall)
+
+sd_rainfall = rainfall_month_sum(sd_hrly)
+print(sd_rainfall)
 
 mlb_ave_total = temp_ave_total(mlb_hrly)
 print(mlb_ave_total)
