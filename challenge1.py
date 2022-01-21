@@ -56,7 +56,42 @@ def temp_less_32(df):
     print('The total number of hours when temperature was less than 32 was', count3)
     return count3
 
-def temp_ave(df):
+def temp_ave_month(df):
+
+    '''
+    The average each month of the dataframe column called 'temp'. Returns a Pandas
+    dataframe with the month name and the temperature mean for that month.
+
+    Parameter:
+        df: the dataframe
+    '''
+    df['time'] = pd.to_datetime(df['time']) #convert to datetime type
+    print(df['time']) #check that it's now a datetime type
+    df.set_index('time', inplace=True) #index using time instead of 0, 1, etc.
+    print(df) #check if index now is using time
+    jan_mean = df.loc['2019-01']['temp'].mean()
+    feb_mean = df.loc['2019-02']['temp'].mean()
+    march_mean = df.loc['2019-03']['temp'].mean()
+    april_mean = df.loc['2019-04']['temp'].mean()
+    may_mean = df.loc['2019-05']['temp'].mean()
+    june_mean = df.loc['2019-06']['temp'].mean()
+    july_mean = df.loc['2019-07']['temp'].mean()
+    aug_mean = df.loc['2019-08']['temp'].mean()
+    sept_mean = df.loc['2019-09']['temp'].mean()
+    oct_mean = df.loc['2019-10']['temp'].mean()
+    nov_mean = df.loc['2019-11']['temp'].mean()
+    dec_mean = df.loc['2019-12']['temp'].mean()
+    data = [['January', jan_mean], ['February', feb_mean], ['March', march_mean],
+    ['April', april_mean], ['May', may_mean], ['June', june_mean], ['July', july_mean],
+    ['August', aug_mean], ['September', sept_mean], ['October', oct_mean],
+    ['November', nov_mean], ['December', dec_mean]]
+    answer = pd.DataFrame(data, columns = ['Month', 'Monthly Average'])
+    print(answer)
+    return answer
+
+
+
+def temp_ave_total(df):
 
     '''
     The mean of the dataframe column called 'temp'.
@@ -69,7 +104,7 @@ def temp_ave(df):
     return temp_mean
 
 def humidity(df):
-    #got overflow warning, can suppress with warning package
+    #got overflow warning, can suppress with warning package.
     #something is wrong with H column - everything is 0? Does this make sense?
     #also, why are there so little values in H compared to the number of values
     #in dewpt or temp??
@@ -87,7 +122,7 @@ def humidity(df):
     print(df.describe())
     return df
 
-#def all_calculations(climate_df):
+#def all_calculations(df):
 
 path = '/Users/rachel/github/climate-melbourne-fl/'
 filename_mlb = 'kmlb_hrly_vals_2019.csv'
@@ -120,23 +155,26 @@ print(mlb_temp_ls_32)
 sd_temp_ls_32 = temp_less_32(sd_hrly)
 print(sd_temp_ls_32)
 
-mlb_ave = temp_ave(mlb_hrly)
-print(mlb_ave)
+mlb_monthly_temp_mean = temp_ave_month(mlb_hrly)
+print(mlb_monthly_temp_mean)
 
-sd_ave = temp_ave(sd_hrly)
-print(sd_ave)
+sd_monthly_temp_mean = temp_ave_month(sd_hrly)
+print(sd_monthly_temp_mean)
 
-mlb_hrly['time'] = pd.to_datetime(mlb_hrly['time'])
+mlb_ave_total = temp_ave_total(mlb_hrly)
+print(mlb_ave_total)
 
-print(mlb_hrly['time']) #it's now a datetime type
+sd_ave_total = temp_ave_total(sd_hrly)
+print(sd_ave_total)
+
+#mlb_hrly['time'] = pd.to_datetime(mlb_hrly['time'])
+#print(mlb_hrly['time']) #it's now a datetime type
 #print(mlb_hrly['time'].min())
 #print(mlb_hrly['time'].max())
-
-mlb_hrly.set_index('time', inplace=True)
+#mlb_hrly.set_index('time', inplace=True)
 #print(mlb_hrly) #success
-
 #print(mlb_hrly.loc['2019-01']) #values for january
-print(mlb_hrly.loc['2019-01']['temp'].mean()) #january mean
+#print(mlb_hrly.loc['2019-01']['temp'].mean()) #january mean
 
 #print(mlb_hrly.describe())
 #print(sd_hrly.describe())
