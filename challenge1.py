@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as dates
+import datetime
 import os
 #import django
 
@@ -193,7 +195,6 @@ print(mlb_temp_ls_32)
 sd_temp_ls_32 = temp_less_32(sd_hrly)
 print(sd_temp_ls_32)
 
-#convert to datetime type and change index from 0, 1, etc. to 'time'
 mlb_hrly = convert(mlb_hrly)
 sd_hrly = convert(sd_hrly)
 
@@ -202,8 +203,6 @@ print(mlb_monthly_temp_mean)
 
 sd_monthly_temp_mean = temp_ave_month(sd_hrly)
 print(sd_monthly_temp_mean)
-
-#print(mlb_hrly) #check if index now is using time - it is
 
 mlb_rainfall = rainfall_month_sum(mlb_hrly)
 print(mlb_rainfall)
@@ -217,18 +216,21 @@ print(mlb_ave_total)
 sd_ave_total = temp_ave_total(sd_hrly)
 print(sd_ave_total)
 
-#mlb_hrly['time'] = pd.to_datetime(mlb_hrly['time'])
-#print(mlb_hrly['time']) #it's now a datetime type
-#print(mlb_hrly['time'].min())
-#print(mlb_hrly['time'].max())
-#mlb_hrly.set_index('time', inplace=True)
-#print(mlb_hrly) #success
-#print(mlb_hrly.loc['2019-01']) #values for january
-#print(mlb_hrly.loc['2019-01']['temp'].mean()) #january mean
+mlb_hrly = humidity(mlb_hrly)
+sd_hrly = humidity(sd_hrly)
 
-#print(mlb_hrly.describe())
-#print(sd_hrly.describe())
+print(mlb_hrly.describe())
+print(sd_hrly.describe())
 
-#humidity(mlb_hrly)
-#humidity(sd_hrly)
-#print(mlb_hrly.describe())
+plt.style.use('seaborn')
+
+plt.plot_date(mlb_hrly, mlb_hrly['temp'], linestyle='solid')
+plt.gcf().autofmt_xdate()
+
+plt.title('Temperature in 2019')
+plt.xlabel('Date')
+plt.ylabel('Tempearture')
+
+plt.tight_layout()
+
+plt.show()
